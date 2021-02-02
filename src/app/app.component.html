@@ -1,0 +1,52 @@
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <label>
+  Name:
+<input type="text" formControlName="name"><br>
+  <p class="worn" *ngIf="f.name.hasError('required')">*Name is required</p>
+  <p class="worn" *ngIf="f.name.errors?.pattern"> *Name should be letters only</p>
+</label>
+    <label>Email:
+  <input type="text" formControlName="email"><br>
+    <p class="worn" *ngIf="f.email.hasError('required')">*Email is required</p>
+    <p class="worn" *ngIf="profileForm.get('email').errors?.email">*Invalid email address</p>
+    <p class="worn" *ngIf="!unique && submitted">*This email is already used</p>
+</label>
+
+    <label>Gender:<br>
+<input type="radio" id="male" name="gender" value="male" formControlName="gender">
+<label for="male">Male</label><br>
+    <input type="radio" id="female" name="gender" value="female" formControlName="gender">
+    <label for="female">Female</label><br>
+    <p class="worn" *ngIf="f.gender.hasError('required') && !profileForm.get('gender').pristine">*gender is required</p>
+    </label>
+
+    <label>Mobile:
+  <input type="text" formControlName="mobile"><br>
+    <p class="worn" *ngIf="f.mobile.hasError('required')">*mobile is required</p>
+    <p class="worn" *ngIf="profileForm.get('mobile').errors?.phoneNumberInvalid"> *mobile should consest of numbers only</p>
+    <p class="worn" *ngIf="profileForm.get('mobile').errors?.lengthInvalid"> *mobile length should be 10</p>
+  </label>
+    <div class="image"><img [src]="imageUrl" *ngIf="f.img.value"></div>
+    <label>img:
+  <input type="file" formControlName="img" (change)="selectFile($event)"><br>
+  <p class="worn" *ngIf="f.img.hasError('required')">*image is required</p>
+  </label>
+    <label>Password:
+  <input type="password" formControlName="password"><br>
+    <p class="worn" *ngIf="f.password.hasError('required'); else pass">*Password is required</p>
+    <ng-template #pass>
+      <p class="worn" *ngIf="profileForm.get('password').errors?.lengthInvalid"> *password should be (6-12)</p>
+      <p class="worn" *ngIf="profileForm.get('password').errors?.capitalMissing"> *should include at least 1 capital letter</p>
+      <p class="worn" *ngIf="profileForm.get('password').errors?.smallMissing"> *should include at least 1 small letter</p>
+      <p class="worn" *ngIf="profileForm.get('password').errors?.numberMissing"> *should include at least 1 number</p>
+      <p class="worn" *ngIf="profileForm.get('password').errors?.specialCharMissing"> *should include at least 1 special char</p>
+    </ng-template>
+  </label>
+    <label>ConfirmPassword:
+  <input type="password" formControlName="confirmPassword"><br>
+    <p class="worn" *ngIf="f.confirmPassword.hasError('required')">*Confirm Password is required</p>
+    <p class="worn" *ngIf="profileForm.hasError('notSame')"> *Your password and confirmation password do not match.</p>
+
+</label>
+    <button type="submit">Submit</button>
+</form>
